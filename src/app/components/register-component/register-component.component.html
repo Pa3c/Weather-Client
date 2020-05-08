@@ -1,0 +1,37 @@
+<div class="container-middle-displayer">
+    <div class="container-form-controls">
+       <form  name="form-signin" (ngSubmit)="f.form.valid && registerToService()" #f="ngForm" novalidate>
+        <div class="form-input-container">       
+            <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                    {{errorMessage}}
+                </div>
+                <div [ngClass]="{'has-error': f.submitted && !email.valid}">
+                    <input type="text" placeholder="Email" name="email" class="form-input" id="email" [(ngModel)]="user.email" #email="ngModel" required email/>
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && !email.valid">
+                        Email is not valid.
+                    </div>
+                </div>            
+                <div [ngClass]="{'has-error': f.submitted && !login.valid}">
+                    <input type="text" placeholder="Login" name="login" class="form-input" id="login" [(ngModel)]="user.login" #login="ngModel" required/>
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && !login.valid">
+                        Login is required.
+                    </div>
+                </div>
+                <div [ngClass]="{'has-error': f.submitted && !password.valid}">
+                    <input type="password" placeholder="Password" name="password" class="form-input" id="password" [(ngModel)]="user.password" #password="ngModel" required/>
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && !password.valid">
+                        Password is required.
+                    </div>
+                </div>
+                <div [ngClass]="{'has-error': f.submitted && !password.valid}">
+                    <input type="password" placeholder="Confirm Password" name="password2" class="form-input" id="password2" [(ngModel)]="user.password2" #password="ngModel" required/>
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && !password.valid">
+                        Password is required.
+                    </div>
+                </div>
+            </div>    
+            <button type="submit" class="btn btn-link custom-button" style="background-color: #828080;">Register</button>
+        </form>
+        <a href="/login" class="btn btn-link custom-button" style="background-color: #CDFF00;">Login</a>
+    </div>
+</div>

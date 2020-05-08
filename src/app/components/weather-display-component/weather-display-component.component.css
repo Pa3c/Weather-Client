@@ -1,0 +1,290 @@
+.upper-panel{
+    height: 0;
+    width: 100%;
+    float: left;
+    min-height: 50px;
+    max-height: 50px;
+}
+.center-panel{
+    min-height: 300px;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.left-panel{
+    width: 60%;
+    height: 100%;
+    float: left;
+
+}
+.right-panel{
+    width: 39%;
+    height: 100%;
+    float: left;
+    margin: 0px;
+    margin-left: 1%; 
+}
+.submit-search{
+    border-radius: 10px;
+    margin-left: 1%;
+    width: 13%;
+    height: 12px;
+    height: 50px;
+    background-color: white;
+    padding: 5px;
+}
+.search-panel{
+    height: 100%;
+}
+.search-input{
+    margin: 0px;
+    width: 85%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    float: left; 
+}
+.history-container{
+    margin-top: 5px;
+    background-color: #F2F2F2;
+    height: 90%;
+    border-radius: 10px;
+    padding: 0px;
+}
+
+.custom-button{
+    color: black;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    padding: 2px;
+}
+.details-button{
+    float: left;
+    margin: 1% 1% 1% 1%;
+}
+.details-buttons-container{
+    margin-top: 3px;
+    
+}
+.details-buttons-container :first-child{
+    width: 30%;
+}
+.details-buttons-container :last-child{
+    width: 30%;
+}
+.form-input {
+    width: 84%;
+    height: 100%;
+    border-radius: 10px;
+    border-color: #828080;
+    border-width: 1px;
+    margin: 1px;
+}
+.history-list-container{
+    padding: 8px;
+}
+.history-table{
+    width: 100%;
+    margin-top: 15px;
+}
+.history-table,th,td{
+    border-width: 1px;
+    border-style: solid;
+    border-color: whitesmoke;
+}
+.history-table th{
+    background-color: #333333;
+    color: #AAAAAA;
+}
+.history-table td{
+    color: #333333;
+    background-color: white;
+    cursor: pointer;
+}
+.history-table tbody {
+    display: block; 
+    height: 295px;      
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;  /* Hide the horizontal scroll */
+}
+.history-table thead,.history-table tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+.history-table tr th:last-child{
+    width: 50px;
+}
+.history-table tr td:last-child {
+   width: 50px;
+}
+.history-table thead {
+    width: calc( 100%)/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+
+.delete-button{
+    border-radius: 10px;
+    background-color: #FF0000;
+    color: white;
+    border-style: solid;
+    border-color: #FF0000;    
+    border-width: 1px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-top-width: 0px;
+}
+.titleSpan{
+    font-weight: bolder;
+}
+.wide-form-input{
+    width: 98%;
+    font-size: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.date-form-input{
+    width: 98%;
+    font-size: 12px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+.hour-form-input{
+    font-size: 12px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+.filter-container{
+    width: 100%;
+    overflow: scroll;
+    background-color: #828080;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 0px;
+    padding: 0px;
+}
+.filter-wrapper{
+    width: 588px;
+    background-color: #828080;
+    height: 130px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: inline-block;
+}
+.static-width-filter-container{
+    float: left;
+}
+.filter-inner{
+    float: left; 
+    text-align: left;
+}
+.filter-inner-first-column{
+    float: left; 
+    text-align: left;
+    width: 70px; 
+    margin-left: 2px;
+}
+.filter-inner-last-column{
+ float: left;
+ margin-left: 2px;
+ height: 100%;
+ width: 110px;
+}
+.filter-submit-button {
+    float: left;
+    width: 100%;
+    margin-right: 2px; 
+    height: 66px; 
+    border-radius: 10px; 
+    background-color: transparent; 
+    border-style: 1px solid;
+    border-color: #6E6C6C;
+}
+.textarea-input{
+    width: 100%;
+    margin-left: 2px; 
+    min-height: 66px; 
+    max-height:66px
+}
+.filter-middle-label{
+    float:left; 
+    text-align: left; 
+    margin-top: 15px;
+}
+
+input[type="time"]
+{
+    font-size:14px;
+}
+
+.weather-details-panel{
+    text-align: center;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    padding: 5px;
+    height: 430px;
+    margin-top: 5px;
+    margin-right: 1%;
+}
+.weather-detail-element{
+    width: 49%;
+    height: 50px;
+    background-color: white;
+    border-color: #797979;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    float: left;
+    margin: 0.5%;
+    cursor: pointer;
+}
+.weather-detail-little-element-container{
+    width: 49%;
+    height: 50px;
+    border-color: #797979;
+    float: left;
+    margin: 0.5%;
+    cursor: pointer;
+}
+.weather-detail-little-element{
+    width:49.5%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    margin-right:1px;
+}
+.weather-big-element{
+    height: 99px;
+    display:table;
+}
+
+/* width */
+::-webkit-scrollbar {
+    height: 4px;
+    width: 2px;
+  }
+::-webkit-scrollbar :hover{
+    cursor: pointer;
+}  
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb :hover {
+  background: #555;
+}
+.info-span{
+line-height: 50px;
+vertical-align: middle;
+}
+
+.big-info-span{
+    line-height: 99px;
+    vertical-align: middle;
+}

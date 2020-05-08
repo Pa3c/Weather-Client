@@ -1,0 +1,25 @@
+<div class="container-middle-displayer">
+    <div class="container-form-controls">
+    <form  name="form-signin" (ngSubmit)="f.form.valid && logToService()" #f="ngForm" novalidate>
+        <div class="form-input-container">
+                <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                    {{errorMessage}}
+                </div>
+                <div [ngClass]="{'has-error': f.submitted && !login.valid}">
+                    <input  class="form-input" type="text" name="login" placeholder="Login"  id="login" [(ngModel)]="user.login" #login="ngModel" required/>
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && !login.valid">
+                        Login is required.
+                    </div>
+                </div>
+                <div [ngClass]="{'has-error': f.submitted && !password.valid}">
+                    <input class="form-input"type="password" name="password" placeholder="Password" id="password" [(ngModel)]="user.password" #password="ngModel" required/>
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && !password.valid">
+                        Password is required.
+                    </div>
+                </div>
+            </div>
+                <button type="submit" class="btn btn-link custom-button" style="background-color: #828080;">Sign in</button>
+        </form>
+        <a href="/register" class="btn btn-link custom-button" style="background-color: #CDFF00;">Register</a>
+    </div>
+</div>    

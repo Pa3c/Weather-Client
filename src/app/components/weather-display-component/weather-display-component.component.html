@@ -1,0 +1,195 @@
+<div class="upper-panel">
+    <div class="left-panel">
+    <h1>HISTORY</h1>
+    </div>
+    <div class="right-panel">
+        <div class="search-panel">
+                <form (ngSubmit)="f.form.valid && searchForWeather()" #f="ngForm" id="place" novalidate>
+                    <input type="text" class="form-input search-input" 
+                    placeholder="City or Lon,Lat" 
+                    [(ngModel)]="placeToSearch" 
+                    name="placeToSearch" required/>
+                    <input type="image" name="submit" src="http://simpleicon.com/wp-content/uploads/search-64x64.png" class="submit-search"/>
+                </form>
+        </div>
+    </div>
+</div>
+<div class="center-panel">
+    <div class="left-panel">
+        <div class="history-container">
+            <div class="filter-container">
+                <div class="filter-wrapper">  
+                    <div class="static-width-filter-container">
+                    <form (ngSubmit)="filterWeathers()">
+                       <div class="filter-inner-first-column">
+                           Country<br>
+                           City<br>
+                       </div>
+                       <div style="width: 400px; float: left;">
+                            <div class="filter-inner" style="width: 100px;">
+                                <input type="text" class="form-input wide-form-input"[(ngModel)]="weatherFilter.country" name="country"/>
+                                <input type="text" class="form-input wide-form-input" [(ngModel)]="weatherFilter.city" name="city"/>
+                            </div>
+                            <div class="filter-middle-label">
+                                Lat
+                            </div>
+                            <div class="filter-inner" style="width: 48px;">
+                                <input type="number" min="-90" max="90" class=" form-input wide-form-input" [(ngModel)]="weatherFilter.latFrom" name="latFrom"/>
+                                <input type="number" min="-90" max="90" class=" form-input wide-form-input" [(ngModel)]="weatherFilter.latTo" name="latTo"/>
+                            </div>    
+                            <div class="filter-middle-label">
+                                Lon
+                            </div>
+                            <div class="filter-inner" style="width: 48px;">
+                                <input type="number" min="-180" max="180" class=" form-input wide-form-input" [(ngModel)]="weatherFilter.lonFrom" name="lonFrom"/>
+                                <input type="number" min="-180" max="180" class=" form-input wide-form-input" [(ngModel)]="weatherFilter.lonTo" name="lonTo"/>
+                            </div>     
+                            <div class="filter-middle-label">
+                                Date
+                            </div>
+                            <div class="filter-inner" style="width: 120px;">
+                                <input type="date" placeholder="dd-mm-yyyy" class="form-input date-form-input" [(ngModel)]="weatherFilter.dateFrom" name="dateFrom"/>
+                                <input type="date" placeholder="dd-mm-yyyy"  class="form-input date-form-input" [(ngModel)]="weatherFilter.dateTo" name="dateTo"/>
+                            </div>
+                            </div>
+                            <div class="filter-inner-last-column">  
+                                <div class="filter-middle-label">
+                                    Hour
+                                </div>
+                                <div class="filter-inner" style="width: 70px;">
+                                    <input type="time" class="form-input wide-form-input hour-form-input" [(ngModel)]="weatherFilter.hourFrom" name="hourFrom" />
+                                    <input type="time" class="form-input wide-form-input hour-form-input" [(ngModel)]="weatherFilter.hourTo" name="hourTo"/>
+                                </div>
+                            </div>
+                            <div style="float: left; width: 470px;"> 
+                                <div class="filter-inner-first-column">Keywords</div>
+                                <div style="width: 394px; float: left;">
+                                    <textarea name="comment" form="usrform" class="form-input textarea-input" [(ngModel)]="weatherFilter.keywords" name="keywords">
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="filter-inner-last-column">  
+                                <div>
+                                    <input type="submit" value="Filter" class="filter-submit-button"/>
+                                </div>   
+                            </div>
+                    </form>    
+                </div> 
+                </div>
+                                            
+            </div>
+            <div class="history-list-container">
+                <table class="history-table">
+                    <thead>
+                       <tr>
+                          <th (click)="sort(0)">Country</th>
+                          <th (click)="sort(1)">City</th>
+                          <th (click)="sort(2)">Date</th>
+                          <th (click)="sort(3)">Hour</th>
+                          <th></th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of transactionList">
+                            <td (click)="setCurrentWeather(item.id)">{{ item.weatherInfo.country }}</td>
+                            <td (click)="setCurrentWeather(item.id)">{{ item.weatherInfo.city }}</td>
+                            <td (click)="setCurrentWeather(item.id)">{{ item.weatherInfo.day}}</td>
+                            <td (click)="setCurrentWeather(item.id)">{{ item.weatherInfo.hour}}</td>
+                            <td>
+                               <button type="button" class="delete-button" (click)="delete(item.id)">X</button>
+                            </td>
+                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        
+        <div class="weather-details-panel">
+                <div class="weather-detail-element" (mouseover)="changeDateText=true" (mouseout)="changeDateText=false">
+                    <span *ngIf="changeDateText" class="titleSpan info-span">Date</span>
+                    <span *ngIf="!changeDateText" class="info-span">{{currentWeather.weatherInfo.day || 'Date'}}</span> 
+                </div>
+                <div class="weather-detail-element" (mouseover)="changeCountryText=true" (mouseout)="changeCountryText=false">
+                    <span *ngIf="changeCountryText" class="titleSpan info-span">Country</span>
+                    <span *ngIf="!changeCountryText" class="info-span">{{currentWeather.weatherInfo.country || 'Country'}}</span>
+                </div>
+                <div class="weather-detail-element" (mouseover)="changeHourText=true" (mouseout)="changeHourText=false">
+                    <span *ngIf="changeHourText" class="titleSpan info-span">Hour</span>
+                    <span *ngIf="!changeHourText" class="info-span">{{currentWeather.weatherInfo.hour || 'Hour'}}</span>
+                     
+                </div>
+                <div class="weather-detail-element" (mouseover)="changeCityText=true" (mouseout)="changeCityText=false">
+                    <span *ngIf="changeCityText" class="titleSpan info-span">City</span>
+                    <span *ngIf="!changeCityText" class="info-span">{{currentWeather.weatherInfo.city || 'City'}}</span>
+                    
+                </div>
+                <div class="weather-detail-element info-span">
+                    Temperature
+                </div>
+                <div class="weather-detail-element info-span">
+                    Coordinates
+                </div>
+                <div class="weather-detail-little-element-container">
+                    <div class="weather-detail-element weather-detail-little-element" (mouseover)="changetemperatureCText=true" (mouseout)="changetemperatureCText=false">
+                        <span *ngIf="changetemperatureCText" class="titleSpan info-span">C</span>
+                        <span *ngIf="!changetemperatureCText" class="info-span"> {{currentWeather.weatherInfo.temperatureC || 'C'}}</span>
+                    </div>
+                
+                    <div class="weather-detail-element weather-detail-little-element" style="margin:0px;" (mouseover)="changetemperatureFText=true" (mouseout)="changetemperatureFText=false">
+                        <span *ngIf="changetemperatureFText" class="titleSpan info-span">F</span>
+                        <span *ngIf="!changetemperatureFText" class="info-span">{{currentWeather.weatherInfo.temperatureF || 'F'}}</span>
+                     
+                    </div>
+                </div>
+                <div class="weather-detail-little-element-container">
+                    <div class="weather-detail-element weather-detail-little-element" (mouseover)="changeLatText=true" (mouseout)="changeLatText=false">
+                        <span *ngIf="changeLatText" class="titleSpan info-span">Lat</span>
+                        <span *ngIf="!changeLatText" class="info-span">{{currentWeather.weatherInfo.latitude || 'Lat'}}</span>
+                     
+                    </div>
+                    <div class="weather-detail-element weather-detail-little-element" style="margin:0px;" (mouseover)="changeLonText=true" (mouseout)="changeLonText=false">
+                        <span *ngIf="changeLonText" class="titleSpan info-span">Lon</span>
+                        <span *ngIf="!changeLonText" class="info-span">{{currentWeather.weatherInfo.longitude || 'Lon'}}</span>
+                    </div>
+                </div>
+                <div class="weather-detail-element weather-big-element" (mouseover)="changeHumidityText=true" (mouseout)="changeHumidityText=false">
+                    <span *ngIf="changeHumidityText" class="titleSpan big-info-span">Humidity</span>
+                    <span *ngIf="!changeHumidityText" class="big-info-span">{{currentWeather.weatherInfo.humidity || 'Humidity'}}</span>
+                     
+                </div>
+                <div class="weather-detail-element weather-big-element" (mouseover)="changePressureText=true" (mouseout)="changePressureText=false">
+                    <span *ngIf="changePressureText" class="titleSpan big-info-span">Pressure</span>
+                    <span *ngIf="!changePressureText" class="big-info-span">{{currentWeather.weatherInfo.pressure || 'Pressure'}}</span>
+                     
+                </div>
+                <div class="weather-detail-element weather-big-element" (mouseover)="changeSunriseText=true" (mouseout)="changeSunriseText=false">
+                    <span *ngIf="changeSunriseText" class="titleSpan big-info-span">Sunrise</span>
+                    <span *ngIf="!changeSunriseText" class="big-info-span"> {{currentWeather.weatherInfo.sunrise || 'Sunrise'}} </span>
+                   
+                </div>
+                <div class="weather-detail-element weather-big-element" (mouseover)="changeSunsetText=true" (mouseout)="changeSunsetText=false">
+                    <span *ngIf="changeSunsetText" class="titleSpan big-info-span">Sunset</span>
+                    <span *ngIf="!changeSunsetText" class="big-info-span"> {{currentWeather.weatherInfo.sunset || 'Sunset'}}</span>
+                </div>
+        </div>
+        <div class="button-panel">
+            <div class="details-buttons-container">
+                <div class="custom-button details-button" style="background-color: #828080;  margin-left: 0px;" (click)="save()">
+                    Save    
+                </div>
+                <div class="custom-button details-button" style="background-color: #CDFF00;  width: 36%;">
+                    Add Image    
+                </div>
+                <div class="custom-button details-button" style="background-color: #00A5FF; margin-right: 0px;">
+                    Gallery
+                </div>
+            </div>
+            <div class="custom-button" style="background-color: #FF6600; float: left; margin-left: 0px;"(click)="logout()">
+                Logout 
+            </div>
+        </div>
+    </div>
+</div>
