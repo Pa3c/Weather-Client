@@ -11,21 +11,28 @@ import { RegisterComponentComponent } from './components/register-component/regi
 import { WeatherDisplayComponentComponent } from './components/weather-display-component/weather-display-component.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './materials/material.module';
+import { PhotoDialogComponent } from './components/photo-dialog/photo-dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponentComponent,
     LoginComponentComponent,
     RegisterComponentComponent,
-    WeatherDisplayComponentComponent
+    WeatherDisplayComponentComponent,
+    PhotoDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,ReactiveFormsModule                         // <========== Add this line!
+    FormsModule,ReactiveFormsModule,
+    BrowserAnimationsModule, MaterialModule
   ],
   providers: [DatePipe],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [PhotoDialogComponent]
 })
 export class AppModule { }

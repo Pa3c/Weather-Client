@@ -1,6 +1,7 @@
 export class Photo {
-    weather_info_id: number;
-    photo: string;
+    weatherInfoId: number;
+    content: any;
     title: string;
     description: string;
+    fileName: string;
 }

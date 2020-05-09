@@ -1,1 +1,41 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
+.my-panel .mat-dialog-container {
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 5px;
+}
+.my-panel{
+    overflow: hidden;
+}
+.my-panel input {
+    margin: 5px;
+}
+.my-panel textarea {
+    width: 99%;
+    min-height: 90px; 
+    max-height:90px
+}
+.my-panel .custom-properties{
+    margin: 2px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    background-color: transparent;
+    border-color: #797979;
+    border-radius: 15px;
+    text-align: center;
+    padding: 2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-style: solid;
+    border-width: 2px;
+}
+.my-panel .file-button{
+    width: 25%;
+    float: right;
+}
+.my-panel .below-button{
+    min-width: 48%;
+    width:  48%;
+}

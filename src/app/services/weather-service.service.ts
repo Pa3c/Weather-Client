@@ -42,7 +42,7 @@ export class WeatherServiceService {
    }
 
   addWeatherPhoto(weatherId: number,photo :Photo): Observable<any>{
-    return this.http.post(API_URL+"/photo/"+weatherId,{headers: {
+    return this.http.post(API_URL+"/photo/"+weatherId,photo,{headers: {
       "Content-Type":"application/json; charset=UTF-8"
    }});
   }

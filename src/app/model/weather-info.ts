@@ -16,5 +16,5 @@ export class WeatherInfo {
     pressure: number;
     sunrise: string="";
     sunset: string="";
-    photos: Photo;
+    photos: Photo[];
 }

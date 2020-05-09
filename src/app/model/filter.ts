@@ -38,4 +38,17 @@ export class Sorter{
         return transactionList.sort((one, two) => (one.weatherInfo.hour > two.weatherInfo.hour ? -1*this.hour : 1*this.hour));
     }
 }
-
+export class TextChanger{
+    changetemperatureCText :boolean = false;
+    changeDateText :boolean = false;
+    changeCountryText :boolean = false;
+    changeHourText :boolean = false;
+    changeCityText :boolean = false;
+    changetemperatureFText :boolean = false;
+    changeLatText :boolean = false;
+    changeLonText :boolean = false;
+    changeHumidityText :boolean = false;
+    changePressureText :boolean = false;
+    changeSunriseText :boolean = false;
+    changeSunsetText :boolean = false;
+}

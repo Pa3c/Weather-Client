@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject} from '@angular/core';
 import {UserServiceService} from '../../services/user-service.service';
 import {WeatherServiceService} from '../../services/weather-service.service';
 import {WeatherInfo} from '../../model/weather-info';
@@ -8,7 +8,9 @@ import {User} from '../../model/user';
 import {Router} from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Country } from '../../model/country';
-import { Filter,Sorter } from 'src/app/model/filter';
+import { Filter,Sorter,TextChanger } from 'src/app/model/filter';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {PhotoDialogComponent} from '../photo-dialog/photo-dialog.component'; 
 
 @Component({
   selector: 'app-weather-display-component',
@@ -17,21 +19,21 @@ import { Filter,Sorter } from 'src/app/model/filter';
 })
 export class WeatherDisplayComponentComponent implements OnInit {
 
-
   user: User;
-  errorMessage :string = "";
   transactionList: Array<WeatherTransaction>;
   currentWeather: WeatherTransaction;
   placeToSearch: string= "";
   weatherFilter :Filter;
-  sorter :Sorter
-
-  constructor(private userService: UserServiceService,
+  sorter :Sorter;
+  textChanger :TextChanger;
+  
+  constructor(public photoDialog: MatDialog,private userService: UserServiceService,
     private weatherServiceService: WeatherServiceService,
     private router: Router,
     private datePipe: DatePipe) {
     this.user = this.userService.currentUserValue;
     this.weatherFilter = new Filter();
+    this.textChanger = new TextChanger();
     this.sorter = new Sorter(1,1,1,1);
   }
 
@@ -44,29 +46,80 @@ export class WeatherDisplayComponentComponent implements OnInit {
    this.currentWeather.weatherInfo = new WeatherInfo();
   }
 
+  openAddPhotoDialog(): void {
+     if(this.currentWeather.weatherInfo.id==null){
+       return;
+     }
+
+    const dialogRef = this.photoDialog.open(PhotoDialogComponent,{
+      panelClass: 'my-panel',
+      width: '40%',
+      minWidth: '250px',
+      height: '270px',
+      minHeight: '220px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result==undefined || result.photo == undefined){
+        return;
+      }
+      this.retreiveDataFromAddPhotoDialog(result);
+    },error=>{
+        console.log("error");
+      });
+  }
+
+  retreiveDataFromAddPhotoDialog(result :any){
+      if(result.title == undefined){
+        if(result.fileName==undefined){
+          result.title="";
+          return;
+        }
+        result.title = result.fileName;
+      }
+      if(result.description==undefined){
+        result.description = "";
+      }
+      this.savePhoto(result);
+  }
+  savePhoto(result :any){
+    let uploadedPhoto = new Photo();
+    uploadedPhoto.description = result.description;
+    uploadedPhoto.title = result.title;
+    uploadedPhoto.fileName = result.fileName;
+    uploadedPhoto.content = btoa(result.photo);
+    uploadedPhoto.weatherInfoId = this.currentWeather.weatherInfo.id;
+    this.weatherServiceService
+    .addWeatherPhoto(uploadedPhoto.weatherInfoId,uploadedPhoto)
+    .subscribe(data=>{
+      uploadedPhoto.content = atob(data.content);
+      this.currentWeather.weatherInfo.photos.push(uploadedPhoto);
+    }
+  );
+  }
+
   findUserTransactions(){
     this.weatherServiceService.findUserTransactions(this.user.id).subscribe(data => {
       this.transactionList = data;
     });
   }
 
-
   logout(){
     this.userService.logout().subscribe(data => {
       this.router.navigate(['/login']);
     },error => {
-      this.errorMessage = "Error while logging out";
+      console.log(error);
     });
   }
 
-  delete(id :number){
+  deleteWeather(id :number){
    let index = this.transactionList.findIndex(x=>x.id==id);
    this.transactionList.splice(index,1);
    this.weatherServiceService.deleteUserWeather(id).subscribe(()=>{
      console.log("Delete completed");
    });
   }
-  save(){
+  saveWeather(){
     if(this.currentWeather.weatherInfo.day==null ||this.currentWeather.weatherInfo.day==undefined ){
       return;
     }
@@ -150,8 +203,6 @@ export class WeatherDisplayComponentComponent implements OnInit {
       let hourFromString = this.weatherFilter.hourFrom.split(":");
       let hourString = x.weatherInfo.hour.split(":");
       let hourToString = this.weatherFilter.hourTo.split(":");
-
-
       let from = new Date(0,0,0,+hourFromString[0],+hourFromString[1],0,0);
       let actual = new Date(0,0,0,+hourString[0],+hourString[1],0,0);
       let to = new Date(0,0,0,+hourToString[0],+hourToString[1],0,0);
