@@ -96,7 +96,10 @@ export class CurrentWeatherComponent implements OnInit {
    this.weatherServiceService
    .addWeatherPhoto(uploadedPhoto.weatherInfoId,uploadedPhoto)
    .subscribe(data=>{
-     uploadedPhoto.content = atob(data.content);
+     uploadedPhoto.content = data.content;
+     uploadedPhoto.id = data.id;
+     uploadedPhoto.weatherInfoId = data.weatherInfoId;
+     console.log(uploadedPhoto);
      WeatherTransactionList.currentWeather.weatherInfo.photos.push(uploadedPhoto);
    }
  );

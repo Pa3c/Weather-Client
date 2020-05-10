@@ -1,31 +1,42 @@
 <div class="gallery-panel">
     <div class="photos-container">
-        <div *ngFor="let photo of photos" class="photo-miniature">
-            <img *ngIf="photo" [src]="photo.content" height="50px" width="50px"(click)="showCurrentPhoto(photo)">
+        <div style=" 
+        overflow: auto;
+        white-space: nowrap;">
+            <div *ngFor="let photo of photos" class="photo-miniature">
+                <img *ngIf="photo" [src]="photo.content" height="50px" width="50px" (click)="showCurrentPhoto(photo)">
+            </div>
         </div>
     </div>
     <div class="gallery-container">
-            <h5 class="selected-photo-title" >{{currentPhoto.title || 'Title'}}</h5>
-            <div class="selected-photo-displayer">
-                <img [src]="currentPhoto.content" width="100%" height="100%">
-            </div>
-            <div class="selected-photo-description">
-                {{currentPhoto.description || 'Description'}}
-            </div>
+        <h5 class="selected-photo-title">{{currentPhoto.title || 'Title'}}</h5>
+        <div class="selected-photo-displayer">
+            <img *ngIf="currentPhoto.content!=null || currentPhoto.content!=undefined" style="border-radius: 10px;"
+                [src]="currentPhoto.content" width="100%" height="100%">
+        </div>
+        <div class="selected-photo-description">
+            {{currentPhoto.description || 'Description'}}
+        </div>
+
     </div>
 
 </div>
 <div class="button-panel">
-<div class="details-buttons-container">
-    <div class="custom-button details-button" style="background-color: #828080;  margin-left: 0px;" (click)="goBack()">
-        Go Back    
+    <div class="details-buttons-container">
+        <div class="custom-button details-button" style="background-color: #828080;  margin-left: 0px;"
+            (click)="goBack()">
+            Go Back
+        </div>
+        <div *ngIf="currentPhoto.id==null" class="custom-button details-button" style="opacity: 0.6;background-color: #FF0000;margin-right: 0px;">
+            Remove
+        </div>
+
+        <div *ngIf="currentPhoto.id!=null" class="custom-button details-button" style="background-color: #FF0000;margin-right: 0px;"
+            (click)="removePhoto()">
+            Remove
+        </div>
     </div>
-    
-    <div class="custom-button details-button" style="background-color: #FF0000;margin-right: 0px;" (click)="removePhoto()">
-        Remove 
+    <div class="custom-button" style="background-color: #FF6600; float: left; margin-left: 0px;" (click)="logout()">
+        Logout
     </div>
-</div>
-<div class="custom-button" style="background-color: #FF6600; float: left; margin-left: 0px;"(click)="logout()">
-    Logout 
-</div>
 </div>

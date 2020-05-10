@@ -36,7 +36,9 @@ export class GalleryComponent implements OnInit {
     this.weatherServiceService.deleteWeatherPhoto(this.currentPhoto.id).subscribe(success =>{
       console.log(success);
       let index = WeatherTransactionList.currentWeather.weatherInfo.photos.findIndex(x=>x.id==this.currentPhoto.id);
-      WeatherTransactionList.currentWeather.weatherInfo.photos.slice(index,1);
+      console.log(index);
+      WeatherTransactionList.currentWeather.weatherInfo.photos.splice(index,1);
+      console.log(WeatherTransactionList.currentWeather.weatherInfo.photos);
       this.currentPhoto = new Photo();
     },error=>{
       console.log(error);
