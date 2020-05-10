@@ -1,5 +1,6 @@
 
 import {WeatherTransaction} from './weather-transaction';
+import { Photo } from './photo';
 export class Filter{
     country :string="";
     city :string="";
@@ -12,6 +13,14 @@ export class Filter{
     hourFrom :string="";
     hourTo :string="";
     keywords :string="";
+}
+export class GalleryModel{
+    static show : boolean = false;
+    static currentPhoto : Photo;
+}
+export class WeatherTransactionList{
+    static transactionList: Array<WeatherTransaction>;
+    static currentWeather: WeatherTransaction;
 }
 export class Sorter{
     constructor(

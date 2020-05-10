@@ -1,17 +1,16 @@
 import { Component, OnInit,Inject} from '@angular/core';
 import {UserServiceService} from '../../services/user-service.service';
 import {WeatherServiceService} from '../../services/weather-service.service';
-import {WeatherInfo} from '../../model/weather-info';
-import {Photo} from '../../model/photo';
 import {WeatherTransaction} from '../../model/weather-transaction';
 import {User} from '../../model/user';
 import {Router} from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { Country } from '../../model/country';
-import { Filter,Sorter,TextChanger } from 'src/app/model/filter';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {PhotoDialogComponent} from '../photo-dialog/photo-dialog.component'; 
-
+import {CurrentWeatherComponent} from '../current-weather/current-weather.component';
+import {DatePipe} from '@angular/common';
+import {WeatherInfo} from '../../model/weather-info';
+import {Country} from '../../model/country';
+import {WeatherTransactionList,GalleryModel,Filter,Sorter,TextChanger} from '../../model/common';
+import {GalleryComponent} from '../gallery/gallery.component';
+import { Photo } from 'src/app/model/photo';
 @Component({
   selector: 'app-weather-display-component',
   templateUrl: './weather-display-component.component.html',
@@ -20,170 +19,98 @@ import {PhotoDialogComponent} from '../photo-dialog/photo-dialog.component';
 export class WeatherDisplayComponentComponent implements OnInit {
 
   user: User;
-  transactionList: Array<WeatherTransaction>;
-  currentWeather: WeatherTransaction;
   placeToSearch: string= "";
   weatherFilter :Filter;
   sorter :Sorter;
-  textChanger :TextChanger;
   
-  constructor(public photoDialog: MatDialog,private userService: UserServiceService,
+  constructor(private userService: UserServiceService,
     private weatherServiceService: WeatherServiceService,
     private router: Router,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,private currentWeatherComponent :CurrentWeatherComponent,private galleryComponent :GalleryComponent) {
     this.user = this.userService.currentUserValue;
-    this.weatherFilter = new Filter();
-    this.textChanger = new TextChanger();
+    this.weatherFilter = new Filter(); 
     this.sorter = new Sorter(1,1,1,1);
   }
 
-  ngOnInit() {
-    if(!this.user){
-      this.router.navigate(['/login']);
-    }
-   this.findUserTransactions(); 
-   this.currentWeather = new WeatherTransaction();
-   this.currentWeather.weatherInfo = new WeatherInfo();
-  }
-
-  openAddPhotoDialog(): void {
-     if(this.currentWeather.weatherInfo.id==null){
-       return;
-     }
-
-    const dialogRef = this.photoDialog.open(PhotoDialogComponent,{
-      panelClass: 'my-panel',
-      width: '40%',
-      minWidth: '250px',
-      height: '270px',
-      minHeight: '220px',
-      data: {}
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result==undefined || result.photo == undefined){
-        return;
-      }
-      this.retreiveDataFromAddPhotoDialog(result);
-    },error=>{
-        console.log("error");
-      });
-  }
-
-  retreiveDataFromAddPhotoDialog(result :any){
-      if(result.title == undefined){
-        if(result.fileName==undefined){
-          result.title="";
-          return;
-        }
-        result.title = result.fileName;
-      }
-      if(result.description==undefined){
-        result.description = "";
-      }
-      this.savePhoto(result);
-  }
-  savePhoto(result :any){
-    let uploadedPhoto = new Photo();
-    uploadedPhoto.description = result.description;
-    uploadedPhoto.title = result.title;
-    uploadedPhoto.fileName = result.fileName;
-    uploadedPhoto.content = btoa(result.photo);
-    uploadedPhoto.weatherInfoId = this.currentWeather.weatherInfo.id;
-    this.weatherServiceService
-    .addWeatherPhoto(uploadedPhoto.weatherInfoId,uploadedPhoto)
-    .subscribe(data=>{
-      uploadedPhoto.content = atob(data.content);
-      this.currentWeather.weatherInfo.photos.push(uploadedPhoto);
-    }
-  );
-  }
-
-  findUserTransactions(){
-    this.weatherServiceService.findUserTransactions(this.user.id).subscribe(data => {
-      this.transactionList = data;
-    });
-  }
-
-  logout(){
-    this.userService.logout().subscribe(data => {
-      this.router.navigate(['/login']);
-    },error => {
-      console.log(error);
-    });
-  }
-
-  deleteWeather(id :number){
-   let index = this.transactionList.findIndex(x=>x.id==id);
-   this.transactionList.splice(index,1);
-   this.weatherServiceService.deleteUserWeather(id).subscribe(()=>{
-     console.log("Delete completed");
-   });
-  }
-  saveWeather(){
-    if(this.currentWeather.weatherInfo.day==null ||this.currentWeather.weatherInfo.day==undefined ){
-      return;
-    }
-    console.log("Saving...")
-    this.currentWeather.userId = this.user.id;
-    this.weatherServiceService.saveWeather(this.currentWeather).subscribe(data=>{
-      console.log(data);
-      this.transactionList.push(data)
-    },error=>{
-      console.log(error);
-    });
-  }
-
+  
   setCurrentWeather(transactionId :number){
-    this.currentWeather = this.transactionList.find(x => x.id==transactionId);
+    GalleryModel.show = false;
+    WeatherTransactionList.currentWeather = WeatherTransactionList.transactionList.find(x => x.id==transactionId);
+    WeatherTransactionList.currentWeather.userId = this.user.id;
   }
   searchForWeather(){
     this.weatherServiceService.searchForTheWeather(this.placeToSearch).subscribe(data =>{
-      this.currentWeather = new WeatherTransaction();
-      this.currentWeather.userId = this.user.id;
-      this.currentWeather.id = null;
+      WeatherTransactionList.currentWeather = new WeatherTransaction();
+      WeatherTransactionList.currentWeather.userId = this.user.id;
+      WeatherTransactionList.currentWeather.id = null;
       let wi = new WeatherInfo();
       wi.id = null;
-      this.currentWeather.weatherInfo = wi;
+      WeatherTransactionList.currentWeather.weatherInfo = wi;
       let weatherDate = new Date(data.dt*1000);
-      this.currentWeather.weatherInfo.date = weatherDate;
-      this.currentWeather.weatherInfo.day = this.datePipe.transform(weatherDate,"dd-MM-yyyy");
-      this.currentWeather.weatherInfo.hour = this.datePipe.transform(weatherDate,"HH:mm");
+      WeatherTransactionList.currentWeather.weatherInfo.date = weatherDate;
+      WeatherTransactionList.currentWeather.weatherInfo.day = this.datePipe.transform(weatherDate,"dd-MM-yyyy");
+      WeatherTransactionList.currentWeather.weatherInfo.hour = this.datePipe.transform(weatherDate,"HH:mm");
 
       let country = Country[data.sys.country];
       if(country==null || country == undefined){
-        this.currentWeather.weatherInfo.country = "Unknown";
+        WeatherTransactionList.currentWeather.weatherInfo.country = "Unknown";
       }else{
-        this.currentWeather.weatherInfo.country = country;
+        WeatherTransactionList.currentWeather.weatherInfo.country = country;
       }
       
       if(this.placeToSearch.includes(",")){
-        this.currentWeather.weatherInfo.city = "Unknown";
+        WeatherTransactionList.currentWeather.weatherInfo.city = "Unknown";
       }else{
-        this.currentWeather.weatherInfo.city = this.placeToSearch;
+        WeatherTransactionList.currentWeather.weatherInfo.city = this.placeToSearch;
       }
-      this.currentWeather.weatherInfo.temperatureC = +(Math.round((data.main.temp-273.15) * 100) / 100).toFixed(2);
-      this.currentWeather.weatherInfo.temperatureF = +(Math.round((this.currentWeather.weatherInfo.temperatureC/5*9+32) * 100) / 100).toFixed(2);
-      this.currentWeather.weatherInfo.latitude = data.coord.lat;
-      this.currentWeather.weatherInfo.longitude = data.coord.lon;
-      this.currentWeather.weatherInfo.humidity = data.main.humidity;
-      this.currentWeather.weatherInfo.pressure = data.main.pressure;
-      this.currentWeather.weatherInfo.sunrise = this.datePipe.transform(data.sys.sunrise*1000,"HH:mm:ss");
-      this.currentWeather.weatherInfo.sunset = this.datePipe.transform(data.sys.sunset*1000,"HH:mm:ss");
+      WeatherTransactionList.currentWeather.weatherInfo.temperatureC = +(Math.round((data.main.temp-273.15) * 100) / 100).toFixed(2);
+      WeatherTransactionList.currentWeather.weatherInfo.temperatureF = +(Math.round((WeatherTransactionList.currentWeather.weatherInfo.temperatureC/5*9+32) * 100) / 100).toFixed(2);
+      WeatherTransactionList.currentWeather.weatherInfo.latitude = data.coord.lat;
+      WeatherTransactionList.currentWeather.weatherInfo.longitude = data.coord.lon;
+      WeatherTransactionList.currentWeather.weatherInfo.humidity = data.main.humidity;
+      WeatherTransactionList.currentWeather.weatherInfo.pressure = data.main.pressure;
+      WeatherTransactionList.currentWeather.weatherInfo.sunrise = this.datePipe.transform(data.sys.sunrise*1000,"HH:mm:ss");
+      WeatherTransactionList.currentWeather.weatherInfo.sunset = this.datePipe.transform(data.sys.sunset*1000,"HH:mm:ss");
 
     },error=>{
       console.log(error);
     })
   }
+  ngOnInit() {
+    if(!this.user){
+      this.router.navigate(['/login']);
+    }
+   this.findUserTransactions(); 
+
+  }
+  findUserTransactions(){
+    this.weatherServiceService.findUserTransactions(this.user.id).subscribe(data => {
+      WeatherTransactionList.transactionList = data;
+    });
+  }
+
+
+  deleteWeather(id :number){
+   let index = WeatherTransactionList.transactionList.findIndex(x=>x.id==id);
+   WeatherTransactionList.transactionList.splice(index,1);
+   this.weatherServiceService.deleteUserWeather(id).subscribe(()=>{
+     console.log("Delete completed");
+     WeatherTransactionList.currentWeather = new WeatherTransaction();
+     WeatherTransactionList.currentWeather.id = null;
+     WeatherTransactionList.currentWeather.userId = this.user.id;
+     WeatherTransactionList.currentWeather.weatherInfo = new WeatherInfo();
+   });
+  }
 
   filterWeathers(){
     this.weatherServiceService.findUserTransactions(this.user.id).subscribe(data => {
-      this.transactionList = data;
+      WeatherTransactionList.transactionList = data;
       
     },error=>console.log(error),()=>this.filter());
   }
   filter(){
     this.setDefaultVariablesToWeatherFilter()
-    this.transactionList =  this.transactionList
+    WeatherTransactionList.transactionList =  WeatherTransactionList.transactionList
     .filter(x=>x.weatherInfo.country.includes(this.weatherFilter.country))
     .filter(x=>x.weatherInfo.city.includes(this.weatherFilter.city))
     .filter(x=>x.weatherInfo.latitude>=this.weatherFilter.latFrom&&x.weatherInfo.latitude<=this.weatherFilter.latTo)
@@ -238,18 +165,26 @@ export class WeatherDisplayComponentComponent implements OnInit {
   sort(choose :number){
     switch(choose){
       case 0: 
-      this.transactionList = this.sorter.countrySort(this.transactionList); 
+      WeatherTransactionList.transactionList = this.sorter.countrySort(WeatherTransactionList.transactionList); 
       break;
       case 1: 
-      this.transactionList = this.sorter.citySort(this.transactionList); 
+      WeatherTransactionList.transactionList = this.sorter.citySort(WeatherTransactionList.transactionList); 
       break;
       case 2: 
-      this.transactionList = this.sorter.dateSort(this.transactionList); 
+      WeatherTransactionList.transactionList = this.sorter.dateSort(WeatherTransactionList.transactionList); 
       break;
       case 3: 
-      this.transactionList = this.sorter.hourSort(this.transactionList); 
+      WeatherTransactionList.transactionList = this.sorter.hourSort(WeatherTransactionList.transactionList); 
       break;
     }
   }
 
+  get transactionList(){
+    return WeatherTransactionList.transactionList;
+  }
+
+  get isGallery(){
+    this.galleryComponent.currentPhoto.content = null;
+    return GalleryModel.show;
+  }
 }

@@ -1,0 +1,63 @@
+.gallery-container,.photo-miniature, .photos-container,.selected-photo-displayer,.selected-photo-description{
+    background-color:white;
+    border-radius: 10px;
+    border-color: #797979;
+    border-style: solid;
+    border-width: 1.5px;
+    margin: 5px;
+}
+.gallery-panel{
+    text-align: center;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    padding: 10px;
+    height: 430px;
+    margin-top: 5px;
+    margin-right: 1%;
+}
+.photos-container{
+    height: 70px;
+    overflow: auto;
+    white-space: nowrap;
+}
+.photo-miniature{
+    display: inline-block;
+}
+.gallery-container{
+    height: 325px;
+    padding: 5px;
+}
+.selected-photo-displayer{
+    height: 200px;
+}
+.selected-photo-description{
+    height: 68px;
+    margin-top: 10px;
+}
+.custom-button{
+    color: black;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    padding: 2px;
+}
+.details-button{
+
+    float: left;
+    margin: 1% 1% 1% 1%;
+}
+.details-button :hover{
+    cursor: pointer;
+}
+.details-buttons-container{
+    margin-top: 3px;
+    
+}
+.details-buttons-container :first-child{
+    width: 49%;
+    color: black;
+}
+.details-buttons-container :last-child{
+    width: 49%;
+    color: white;
+}

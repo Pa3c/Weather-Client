@@ -1,0 +1,31 @@
+<div class="gallery-panel">
+    <div class="photos-container">
+        <div *ngFor="let photo of photos" class="photo-miniature">
+            <img *ngIf="photo" [src]="photo.content" height="50px" width="50px"(click)="showCurrentPhoto(photo)">
+        </div>
+    </div>
+    <div class="gallery-container">
+            <h5 class="selected-photo-title" >{{currentPhoto.title || 'Title'}}</h5>
+            <div class="selected-photo-displayer">
+                <img [src]="currentPhoto.content" width="100%" height="100%">
+            </div>
+            <div class="selected-photo-description">
+                {{currentPhoto.description || 'Description'}}
+            </div>
+    </div>
+
+</div>
+<div class="button-panel">
+<div class="details-buttons-container">
+    <div class="custom-button details-button" style="background-color: #828080;  margin-left: 0px;" (click)="goBack()">
+        Go Back    
+    </div>
+    
+    <div class="custom-button details-button" style="background-color: #FF0000;margin-right: 0px;" (click)="removePhoto()">
+        Remove 
+    </div>
+</div>
+<div class="custom-button" style="background-color: #FF6600; float: left; margin-left: 0px;"(click)="logout()">
+    Logout 
+</div>
+</div>

@@ -1,0 +1,77 @@
+.custom-button{
+    color: black;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    padding: 2px;
+}
+.details-button{
+
+    float: left;
+    margin: 1% 1% 1% 1%;
+}
+.details-button :hover{
+    cursor: pointer;
+}
+.details-buttons-container{
+    margin-top: 3px;
+    
+}
+.details-buttons-container :first-child{
+    width: 30%;
+}
+.details-buttons-container :last-child{
+    width: 30%;
+}
+.titleSpan{
+    font-weight: bolder;
+}
+.weather-details-panel{
+    text-align: center;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    padding: 5px;
+    height: 430px;
+    margin-top: 5px;
+    margin-right: 1%;
+}
+.weather-detail-element{
+    width: 49%;
+    height: 50px;
+    background-color: white;
+    border-color: #797979;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    float: left;
+    margin: 0.5%;
+    cursor: pointer;
+}
+.weather-detail-little-element-container{
+    width: 49%;
+    height: 50px;
+    border-color: #797979;
+    float: left;
+    margin: 0.5%;
+    cursor: pointer;
+}
+.weather-detail-little-element{
+    width:49.5%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    margin-right:1px;
+}
+.weather-big-element{
+    height: 99px;
+    display:table;
+}
+.info-span{
+line-height: 50px;
+vertical-align: middle;
+}
+
+.big-info-span{
+    line-height: 99px;
+    vertical-align: middle;
+}

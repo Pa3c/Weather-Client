@@ -14,6 +14,8 @@ import {DatePipe} from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './materials/material.module';
 import { PhotoDialogComponent } from './components/photo-dialog/photo-dialog.component';
+import { CurrentWeatherComponent } from './components/current-weather/current-weather.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { PhotoDialogComponent } from './components/photo-dialog/photo-dialog.com
     LoginComponentComponent,
     RegisterComponentComponent,
     WeatherDisplayComponentComponent,
-    PhotoDialogComponent
+    PhotoDialogComponent,
+    CurrentWeatherComponent,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,7 @@ import { PhotoDialogComponent } from './components/photo-dialog/photo-dialog.com
     FormsModule,ReactiveFormsModule,
     BrowserAnimationsModule, MaterialModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,CurrentWeatherComponent,GalleryComponent],
   bootstrap: [AppComponent],
   entryComponents: [PhotoDialogComponent]
 })

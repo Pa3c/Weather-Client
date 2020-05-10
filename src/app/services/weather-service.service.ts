@@ -36,9 +36,7 @@ export class WeatherServiceService {
 
 
    deleteWeatherPhoto(photoId: number): Observable<any>{
-     return this.http.delete(API_URL_PHOTO+photoId,{headers : {
-      "Content-Type":"application/json; charset=UTF-8"
-    }});
+     return this.http.delete(API_URL_PHOTO+photoId);
    }
 
   addWeatherPhoto(weatherId: number,photo :Photo): Observable<any>{
