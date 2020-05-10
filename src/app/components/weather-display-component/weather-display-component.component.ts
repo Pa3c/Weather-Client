@@ -116,6 +116,31 @@ export class WeatherDisplayComponentComponent implements OnInit {
     .filter(x=>x.weatherInfo.latitude>=this.weatherFilter.latFrom&&x.weatherInfo.latitude<=this.weatherFilter.latTo)
     .filter(x=>x.weatherInfo.longitude>=this.weatherFilter.lonFrom&&x.weatherInfo.longitude<=this.weatherFilter.lonTo)
     .filter(x=>{
+      if(this.weatherFilter.keywords == undefined || this.weatherFilter.keywords == null || this.weatherFilter.keywords.length==0){
+        return true;
+      }
+      let regex = new RegExp("\\s+|,\\s*|\\.\\s*");
+      let keywords = this.weatherFilter.keywords.split(regex);
+      let photos = x.weatherInfo.photos;
+      let filtered = photos.filter(y=>{
+       let title = y.title.split(regex);
+       let desc = y.description.split(regex);   
+      for(let keyword of keywords){
+         if(title.includes(keyword)){
+           return true;
+         }
+        if(desc.includes(keyword)){
+          return true;
+        }
+      }
+      return false;
+      });
+      if(filtered.length>0){
+        return true;
+      }
+      return false;
+    })
+    .filter(x=>{
       let actualDateTable =  x.weatherInfo.day.split("-"); //"22-05-2012"
 
       let actualDate = new Date( +actualDateTable[2],+actualDateTable[1]-1,+actualDateTable[0])
