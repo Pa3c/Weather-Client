@@ -68,10 +68,10 @@
 </div>
 <div class="button-panel">
 <div class="details-buttons-container">
-    <div *ngIf="currentWeather.weatherInfo.id==null" class="custom-button details-button" style="opacity: 0.6; background-color: #828080;  margin-left: 0px;">
+    <div *ngIf="currentWeather.weatherInfo.id!=null" class="custom-button details-button" style="opacity: 0.6; background-color: #828080;  margin-left: 0px;">
         Save   
     </div>
-    <div *ngIf="currentWeather.weatherInfo.id!=null" class="custom-button details-button" style="background-color: #828080;  margin-left: 0px;" (click)="saveWeather()">
+    <div *ngIf="currentWeather.weatherInfo.id==null" class="custom-button details-button" style="background-color: #828080;  margin-left: 0px;" (click)="saveWeather()">
         Save    
     </div>
     

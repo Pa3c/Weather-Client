@@ -100,6 +100,9 @@ export class CurrentWeatherComponent implements OnInit {
      uploadedPhoto.id = data.id;
      uploadedPhoto.weatherInfoId = data.weatherInfoId;
      console.log(uploadedPhoto);
+     if(WeatherTransactionList.currentWeather.weatherInfo.photos==null){
+      WeatherTransactionList.currentWeather.weatherInfo.photos = new Array();
+     }
      WeatherTransactionList.currentWeather.weatherInfo.photos.push(uploadedPhoto);
    }
  );
